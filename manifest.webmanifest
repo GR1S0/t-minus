@@ -1,9 +1,8 @@
 {
-  "name": "T-minus",
-  "short_name": "T-minus",
+  "name": "T-Minus",
+  "short_name": "T-Minus",
   "description": "Timer di recupero: ghiera e tempi fissi da 30, 60 e 90 secondi.",
   "lang": "it",
-  "id": "./",
   "start_url": "./?app=1",
   "scope": "./",
   "display": "standalone",

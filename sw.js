@@ -1,6 +1,6 @@
 // Service worker: rende la pagina installabile e la tiene in cache, così T-minus si apre anche senza rete.
 // Prima prova la rete (per avere sempre l'ultima versione), se manca usa la copia salvata.
-const CACHE = 't-minus-v1';
+const CACHE = 't-minus-v2';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
