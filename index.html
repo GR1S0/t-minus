@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>T-</title>
+<meta name="theme-color" content="#290712">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{color-scheme:dark;--bg:#290712;--fg:#F4EFEC;--muted:#A39A95;--accent:#F26B38;--accent-2:#D23A3A}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;
+    padding:max(24px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+  main{max-width:360px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+  img{width:136px;height:136px;border-radius:30px;corner-shape:squircle;border-radius:44px;box-shadow:0 18px 50px rgba(242,107,56,.3)}
+  h1{margin:0;font-size:30px;letter-spacing:-.02em;font-weight:800}
+  p{margin:0;color:var(--muted)}
+  .btn{display:inline-block;border:0;border-radius:14px;padding:14px 22px;font:inherit;font-weight:700;color:#fff;text-decoration:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--accent) 0%,var(--accent) 40%,var(--accent-2) 135%)}
+  .ghost{background:none;color:var(--fg);border:1px solid rgba(255,255,255,.18)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <img src="icon-512.png" alt="">
+  <h1>T−</h1>
+  <p id="msg">Installa l'app per averla sulla schermata Home, con questa icona.</p>
+  <button class="btn" id="install" type="button" hidden>Installa l'app</button>
+  <p id="how">Su Android: menu ⋮ di Chrome → <b>Installa app</b> (o "Aggiungi a schermata Home").</p>
+  <a class="btn ghost" id="open" href="#">Apri T−</a>
+</main>
+<script>
+  const ARTIFACT = 'https://claude.ai/artifact/VctkWfgTX9brKgt7Q9U8pu';
+  document.getElementById('open').href = ARTIFACT;
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  // aperta dall'icona: va dritta all'app
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone || new URLSearchParams(location.search).has('app');
+  if (standalone) { document.getElementById('msg').textContent = 'Apertura…'; location.replace(ARTIFACT); }
+  let deferred = null;
+  addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferred = e;
+    document.getElementById('install').hidden = false; document.getElementById('how').hidden = true;
+  });
+  document.getElementById('install').addEventListener('click', async () => {
+    if (!deferred) return;
+    deferred.prompt(); await deferred.userChoice; deferred = null;
+    document.getElementById('install').hidden = true;
+  });
+  addEventListener('appinstalled', () => { document.getElementById('msg').textContent = 'Installata: la trovi tra le app del telefono.'; });
+</script>
+</body>
+</html>
